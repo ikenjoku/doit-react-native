@@ -13,6 +13,10 @@ class Todo extends Component {
     console.log(text);
   }
 
+  clearInput = () => {
+    this.setState({text: ''});
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -24,7 +28,7 @@ class Todo extends Component {
               containerStyle={styles.formInput}
             />
             <Button
-              onPress={() => this.addTodo(this.state.text)}
+              onPress={() => {this.addTodo(this.state.text); this.clearInput()}}
               title="Submit"
               buttonStyle={{
                 backgroundColor: "#2F3D38",

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { FormInput, Button } from 'react-native-elements';
 
 import TodoList from './TodoList';
-
+import { todos } from '../mockData/todos';
 class Todo extends Component {
   state = {
     text: '',
@@ -25,14 +25,15 @@ class Todo extends Component {
             />
             <Button
               onPress={() => this.addTodo(this.state.text)}
-              title="Add"
+              title="Submit"
               buttonStyle={{
-                backgroundColor: "#512DA8"
+                backgroundColor: "#2F3D38",
+                borderRadius: 5
               }}
             />
           </View>
           <View style={styles.containList}>
-            <TodoList />
+            <TodoList todos={todos} error={null} isLoading={false} />
           </View>
       </View>
     );
@@ -42,6 +43,7 @@ class Todo extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#151F38'
   },
   containForm: {
     flex: 1,
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
   },
   containList: {
     flex: 4,
-    backgroundColor: '#512DA8',
+    backgroundColor: '#CBCECA',
   },
   formInput: {
     flex: 4,

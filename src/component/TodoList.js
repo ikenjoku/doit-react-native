@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { FlatList, Button, Text, View, Modal, StyleSheet, TextInput } from 'react-native';
-import { ListItem, FormInput } from 'react-native-elements';
+import { FlatList, Button, Text, View, Modal, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import Swipeout from 'react-native-swipeout';
 import { connect } from 'react-redux';
@@ -84,7 +84,7 @@ class TodoList extends Component {
       }
       else {
         return (
-          <View>
+          <ScrollView>
             <FlatList
               data={this.props.todos}
               renderItem={renderTodoItem}
@@ -112,7 +112,7 @@ class TodoList extends Component {
               </View>
             </Modal>
             </View>
-          </View>
+          </ScrollView>
 
         );
       }

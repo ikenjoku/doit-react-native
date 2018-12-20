@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
-import { FlatList, Button, Text, View, Modal, StyleSheet } from 'react-native';
+import { FlatList, Button, Text, View, Modal, StyleSheet, TextInput } from 'react-native';
 import { ListItem, FormInput } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import Swipeout from 'react-native-swipeout';
+import { connect } from 'react-redux';
+import { edit_todo_success, delete_todo_success } from '../redux/actions/todoActions';
 import { Loader } from "./Loader";
 
 class TodoList extends Component {
   state = {
     showModal: false,
-    itemTextToEdit: ''
+    itemTextToEdit: '',
+    itemIdToEdit: '',
   };
 
   handleEditItem = ({ id, text }) => {
     this.setState({
       itemTextToEdit: text,
+      itemIdToEdit: id,
       showModal: true
      });
 
@@ -23,9 +27,18 @@ class TodoList extends Component {
     this.setState({ showModal: !this.state.showModal });
   }
 
+  clearState = () => {
+    this.setState({
+      itemIdToEdit: '',
+      itemTextToEdit: ''
+    });
+  };
+
   editItem = () => {
-    console.log('edit the item here');
-    this.setState({ itemTextToEdit: '' });
+    const { itemIdToEdit, itemTextToEdit } = this.state;
+    const updatedItem = {id: itemIdToEdit, text: itemTextToEdit}
+    this.props.edit_todo_success(updatedItem, itemIdToEdit)
+    this.clearState()
   }
 
   render() {
@@ -36,7 +49,7 @@ class TodoList extends Component {
           text: 'Delete',
           type: 'delete',
           onPress: () => {
-            console.log('Remove this item')
+            this.props.delete_todo_success(item.id)
           }
         },
         {
@@ -83,17 +96,18 @@ class TodoList extends Component {
               onDismiss={() => this.toggleModal()}
               onRequestClose={() => this.toggleModal()}>
               <View style={styles.modal}>
-                <FormInput
+                <TextInput
                   placeholder={this.state.itemTextToEdit}
                   onChangeText={(text) => this.setState({ itemTextToEdit: text })}
                   value={this.state.itemTextToEdit}
-                  containerStyle={styles.formInput}
+                  style={styles.formInput}
                 />
 
                 <Button
                   onPress={() => { this.editItem(this.state.itemTextToEdit); this.toggleModal(); }}
-                  color="#512DA8"
+                  color="#2F3D38"
                   title="Update"
+                  style={styles.updateBtn}
                 />
               </View>
             </Modal>
@@ -104,15 +118,32 @@ class TodoList extends Component {
       }
     }
     return (
-      this.props.isLoading ? <Loader /> : renderResult()
+      this.props.isFetching ? <Loader /> : renderResult()
     );
   };
 };
 
 const styles = StyleSheet.create({
   modal: {
-
+    flex: 1,
+    backgroundColor: '#CBCECA',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  formInput: {
+    color: '#151F38',
+    borderColor: '#151F38',
+    padding: 30,
+  },
+  updateBtn: {
+    borderRadius: 5
   }
 });
 
-export default TodoList;
+const mapStateToProps = ({ todoReducer }) => ({
+  todos: todoReducer.todos,
+  error: todoReducer.error,
+  isFetching: todoReducer.isFetching,
+});
+
+export default connect(mapStateToProps, { edit_todo_success, delete_todo_success })(TodoList);

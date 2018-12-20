@@ -1,19 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Todo from "./src/component/Todo";
+import { Provider } from 'react-redux';
+import TodoApp from "./src/component/Todo";
+import configureStore from './src/redux/configureStore';
 
+const store = configureStore();
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Todo />
-      </View>
+      <Provider store={store}>
+        <TodoApp />
+      </Provider>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

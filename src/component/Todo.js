@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FormInput, Button } from 'react-native-elements';
-
+import { connect } from 'react-redux';
+import {add_todo_success} from '../redux/actions/todoActions';
 import TodoList from './TodoList';
 import { todos } from '../mockData/todos';
 class Todo extends Component {
@@ -11,6 +12,10 @@ class Todo extends Component {
 
   addTodo = text => {
     console.log(text);
+    if(text.length > 0){
+    const newItem = {id : Math.floor(Math.random() * 10000), text}
+    this.props.add_todo_success(newItem)
+    }
   }
 
   clearInput = () => {
@@ -18,6 +23,22 @@ class Todo extends Component {
   }
 
   render() {
+    const renderList = () => {
+      if(this.props.todos.length > 0){
+        return (
+          <View style={styles.containList}>
+            <TodoList />
+          </View>
+        );
+      } else {
+        return (
+          <View style={styles.message}>
+            <Text style={styles.textMessage}>No items found.</Text>
+            <Text style={styles.textMessage}>Amazings happens when you plan...</Text>
+          </View>
+        );
+      }
+    }
     return (
       <View style={styles.container}>
           <View style={styles.containForm}>
@@ -36,13 +57,15 @@ class Todo extends Component {
               }}
             />
           </View>
-          <View style={styles.containList}>
-            <TodoList todos={todos} error={null} isLoading={false} />
-          </View>
+          {renderList()}
       </View>
     );
   }
 };
+
+const mapStateToProps = ({ todoReducer }) => ({
+  todos: todoReducer.todos
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -64,7 +87,16 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+  },
+  message: {
+    flex: 4,
+    backgroundColor: '#151F38',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  textMessage: {
+    color: '#ffffff'
   }
 });
 
-export default Todo;
+export default connect(mapStateToProps, { add_todo_success })(Todo);

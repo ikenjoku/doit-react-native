@@ -43,7 +43,7 @@ class Todo extends Component {
       <View style={styles.container}>
         <StatusBar barStyle='light-content' />
         <View style={styles.topbar}>
-          <Text style={styles.title}>To-Do List</Text>
+          <Text style={styles.title}>Do-It List</Text>
         </View>
         <View style={styles.containForm}>
           <View style={styles.inputContainer}>

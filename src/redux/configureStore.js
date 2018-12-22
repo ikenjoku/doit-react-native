@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { persistStore, persistCombineReducers } from "redux-persist";
 import todoReducer from './reducers/todoReducer';
+import authReducer from './reducers/authReducer';
 import storage from 'redux-persist/es/storage';
 
 const config = {
@@ -15,6 +16,7 @@ const configureStore = () => {
   const store = createStore(
     persistCombineReducers(config, {
     todoReducer,
+    authReducer,
   }), applyMiddleware(thunk, logger));
 
   const persistor = persistStore(store);

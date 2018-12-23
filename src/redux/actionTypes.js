@@ -26,3 +26,6 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 
 export const REGISTER_PAGE = 'REGISTER_PAGE';
 export const LOGIN_PAGE = 'LOGIN_PAGE';
+
+export const ADD_ALERT = 'ADD_ALERT';
+export const REMOVE_ALERT = 'REMOVE_ALERT';

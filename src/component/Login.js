@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, Keyboard, TouchableOpacity } from 'react-native';
 import { connect } from "react-redux";
 import { register_page } from "../redux/actions/authActions";
+import { add_alert } from "../redux/actions/alertActions";
+
 class Login extends Component {
   state = {
     email: '',
@@ -13,6 +15,7 @@ class Login extends Component {
   }
 
   handleLogIn = () => {
+    this.props.add_alert('hello')
     console.log(this.state.password, this.state.email);
   }
 
@@ -126,4 +129,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(null, {register_page})(Login);
+export default connect(null, {register_page, add_alert})(Login);

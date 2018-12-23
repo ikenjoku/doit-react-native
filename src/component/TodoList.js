@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, Button, Text, View, Modal, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { FlatList, Button, Text, View, Modal, StyleSheet, TextInput, ScrollView, RefreshControl } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import Swipeout from 'react-native-swipeout';
@@ -12,6 +12,7 @@ class TodoList extends Component {
     showModal: false,
     itemTextToEdit: '',
     itemIdToEdit: '',
+    refreshing: false,
   };
 
   handleEditItem = ({ id, text }) => {
@@ -21,6 +22,13 @@ class TodoList extends Component {
       showModal: true
      });
 
+  }
+
+  onRefresh = () => {
+    this.setState({refreshing: true});
+    setTimeout(() => {
+      this.setState({refreshing: false});
+    }, 5000);
   }
 
   toggleModal = () => {
@@ -84,7 +92,14 @@ class TodoList extends Component {
       }
       else {
         return (
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh}
+              />
+            }
+          >
             <FlatList
               data={this.props.todos}
               renderItem={renderTodoItem}

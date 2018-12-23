@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, Keyboard, TouchableOpacity } from 'react-native';
 import { connect } from "react-redux";
-import { register_page } from "../redux/actions/authActions";
+import { register_page, loginUser } from "../redux/actions/authActions";
 import { add_alert } from "../redux/actions/alertActions";
 
 class Login extends Component {
@@ -10,17 +10,16 @@ class Login extends Component {
     password: ''
   }
 
-  navigateToSignUp = () => {
-
-  }
-
   handleLogIn = () => {
-    this.props.add_alert('hello')
-    console.log(this.state.password, this.state.email);
+    const { email, password } = this.state;
+    if (email && password){
+    this.props.loginUser({ email, password });
+    } else {
+      this.props.add_alert('Please fill in all fields');
+    }
   }
 
   render() {
-
     return (
       <View style={styles.container}>
         <View style={styles.titleContainer}>
@@ -61,7 +60,6 @@ class Login extends Component {
     );
   }
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -129,4 +127,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(null, {register_page, add_alert})(Login);
+export default connect(null, {register_page, loginUser, add_alert})(Login);

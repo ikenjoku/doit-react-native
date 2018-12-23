@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, Keyboard, TouchableOpacity, ScrollView } from 'react-native';
 import { connect } from "react-redux";
-import { login_page } from "../redux/actions/authActions";
+import { login_page, signupUser } from "../redux/actions/authActions";
+import { add_alert } from "../redux/actions/alertActions";
+
 class SignUp extends Component {
   state = {
     username: '',
@@ -10,12 +12,13 @@ class SignUp extends Component {
     confirmPassword: ''
   }
 
-  navigateToSignUp = () => {
-
-  }
-
-  handleLogIn = () => {
-    console.log(this.state.password, this.state.email);
+  handleSignUp = () => {
+    const { username, email, password, confirmPassword} = this. state;
+    if (username && email && password && confirmPassword){
+      this.props.signupUser({ username, email, password, confirmPassword});
+    } else {
+      this.props.add_alert('Please fill in all fields');
+    }
   }
 
   render() {
@@ -61,7 +64,7 @@ class SignUp extends Component {
               style={styles.textInput} />
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={this.handleLogIn}>
+            <TouchableOpacity onPress={this.handleSignUp}>
               <Text style={styles.loginButton}>
                 Sign Up
             </Text>
@@ -146,4 +149,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default connect(null, {login_page})(SignUp);
+export default connect(null, {login_page, signupUser, add_alert})(SignUp);

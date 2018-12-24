@@ -15,14 +15,16 @@ const config = {
 
 const configureStore = () => {
   const store = createStore(
-    persistCombineReducers(config, {
+    // persistCombineReducers(config, {
+    combineReducers({
     todoReducer,
     authReducer,
     alertReducer,
   }), applyMiddleware(thunk, logger));
 
-  const persistor = persistStore(store);
-  return { persistor, store };
+  // const persistor = persistStore(store);
+  // return { persistor, store };
+  return store;
 };
 
 export default configureStore;

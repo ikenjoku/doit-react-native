@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, StatusBar, Keyboard } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { add_todo_success } from '../redux/actions/todoActions';
+import { createTodo, fetchTodos } from '../redux/actions/todoActions';
 import { logoutUser } from '../redux/actions/authActions';
 import TodoList from './TodoList';
 class Todo extends Component {
@@ -10,10 +10,13 @@ class Todo extends Component {
     text: '',
   };
 
+  componentDidMount(){
+    this.props.fetchTodos(this.props.userId);
+  };
+
   addTodo = text => {
     if (text.length > 0) {
-      const newItem = { id: Math.floor(Math.random() * 10000), text }
-      this.props.add_todo_success(newItem);
+      this.props.createTodo(this.props.userId, text);
       Keyboard.dismiss();
     }
   }
@@ -27,7 +30,7 @@ class Todo extends Component {
       if (this.props.todos.length > 0) {
         return (
           <View style={styles.containList}>
-            <TodoList />
+            <TodoList/>
           </View>
         );
       } else {
@@ -84,8 +87,9 @@ class Todo extends Component {
   }
 };
 
-const mapStateToProps = ({ todoReducer }) => ({
-  todos: todoReducer.todos
+const mapStateToProps = ({ todoReducer, authReducer }) => ({
+  todos: todoReducer.todos,
+  userId: authReducer.userId,
 });
 
 const styles = StyleSheet.create({
@@ -152,4 +156,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, { add_todo_success, logoutUser })(Todo);
+export default connect(mapStateToProps, { createTodo, logoutUser, fetchTodos })(Todo);

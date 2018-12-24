@@ -1,8 +1,9 @@
+import { SecureStore } from "expo";
 import * as ActionTypes from '../actionTypes';
 import API from '../axiosConfig';
 import { add_alert } from "./alertActions";
 import handleErrorMessage from '../../helpers/errorMessageHandler';
-import setAuthorizationToken from '../../helpers/setAuthorizationToken';
+
 
 export const login_user = () => ({
   type: ActionTypes.LOGIN_USER,
@@ -55,11 +56,18 @@ export const loginUser = ({ email, password }) => (dispatch) => {
   return API.post('/login', { email, password })
     .then(response => {
       dispatch(login_user_success(response.data.user.id, response.data.user.username));
-      setAuthorizationToken(response.data.token)
+
+      SecureStore.setItemAsync('userInfo', JSON.stringify({
+        userId: response.data.user.id,
+        username: response.data.user.username,
+        email: response.data.user.email,
+        token: response.data.token,
+      }))
+        .catch((error) => console.log('Could not save user info', error));
       dispatch(add_alert(response.data.message));
     })
     .catch(error => {
-      dispatch(login_user_failure(error.response.data));
+      dispatch(login_user_failure(error.response.data.message));
       if (error.response.data.status === 400) {
         const message = handleErrorMessage(error.response.data);
         dispatch(add_alert(message));
@@ -74,7 +82,14 @@ export const signupUser = (userData) => (dispatch) => {
   return API.post('/signup', userData)
     .then(response => {
       dispatch(signup_user_success(response.data.user.id, response.data.user.username));
-      setAuthorizationToken(response.data.token)
+
+      SecureStore.setItemAsync('userInfo', JSON.stringify({
+        userId: response.data.user.id,
+        username: response.data.user.username,
+        email: response.data.user.email,
+        token: response.data.token,
+      }))
+        .catch((error) => console.log('Could not save user info', error));
       dispatch(add_alert(response.data.message));
     })
     .catch(error => {
@@ -89,6 +104,7 @@ export const signupUser = (userData) => (dispatch) => {
 };
 
 export const logoutUser = () => (dispatch) => {
-  setAuthorizationToken();
+  SecureStore.deleteItemAsync('userInfo')
+    .catch((error) => console.log('Could not delete user info', error));
   dispatch(logout_user());
 };

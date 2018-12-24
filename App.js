@@ -9,14 +9,15 @@ import configureStore from './src/redux/configureStore';
 import { PersistGate } from 'redux-persist/es/integration/react'
 import { Loader } from "./src/component/Loader";
 
-const { persistor, store } = configureStore();
+// const { persistor, store } = configureStore();
+const store = configureStore();
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <PersistGate persistor={persistor} loading={<Loader />}>
+        {/* <PersistGate persistor={persistor} loading={<Loader />}> */}
           <Main />
-        </PersistGate>
+        {/* </PersistGate> */}
       </Provider>
     );
   }

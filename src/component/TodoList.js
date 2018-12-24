@@ -4,7 +4,7 @@ import { ListItem } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import Swipeout from 'react-native-swipeout';
 import { connect } from 'react-redux';
-import { updateTodo, deleteTodo } from '../redux/actions/todoActions';
+import { updateTodo, deleteTodo, fetchTodos } from '../redux/actions/todoActions';
 import { Loader } from "./Loader";
 
 class TodoList extends Component {
@@ -15,20 +15,18 @@ class TodoList extends Component {
     refreshing: false,
   };
 
-  handleEditItem = ({ id, text }) => {
+  handleEditItem = ({ _id, text }) => {
     this.setState({
       itemTextToEdit: text,
-      itemIdToEdit: id,
+      itemIdToEdit: _id,
       showModal: true
      });
 
   }
 
   onRefresh = () => {
-    this.setState({refreshing: true});
-    setTimeout(() => {
-      this.setState({refreshing: false});
-    }, 5000);
+    const { fetchTodos, userId} = this.props;
+    fetchTodos(userId);
   }
 
   toggleModal = () => {
@@ -162,4 +160,4 @@ const mapStateToProps = ({ todoReducer, authReducer }) => ({
   isFetching: todoReducer.isFetching,
 });
 
-export default connect(mapStateToProps, { updateTodo, deleteTodo })(TodoList);
+export default connect(mapStateToProps, { updateTodo, deleteTodo, fetchTodos })(TodoList);

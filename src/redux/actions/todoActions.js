@@ -128,7 +128,7 @@ export const deleteTodo = (userId, todoId) => (dispatch) => {
     .then((userdata) => {
       const userInfo = JSON.parse(userdata);
       const { token } = userInfo;
-      return API.get(`/users/${userId}/todos/${todoId}`, { headers: { authorization: token } })
+      return API.delete(`/users/${userId}/todos/${todoId}`, { headers: { authorization: token } })
         .then(response => {
           dispatch(delete_todo_success(todoId));
         })

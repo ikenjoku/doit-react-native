@@ -55,7 +55,6 @@ export const loginUser = ({ email, password }) => (dispatch) => {
   dispatch(login_user());
   return API.post('/login', { email, password })
     .then(response => {
-      dispatch(login_user_success(response.data.user.id, response.data.user.username));
 
       SecureStore.setItemAsync('userInfo', JSON.stringify({
         userId: response.data.user.id,
@@ -63,8 +62,11 @@ export const loginUser = ({ email, password }) => (dispatch) => {
         email: response.data.user.email,
         token: response.data.token,
       }))
+      .then(() => {
+        dispatch(login_user_success(response.data.user.id, response.data.user.username));
+        dispatch(add_alert(response.data.message));
+      })
         .catch((error) => console.log('Could not save user info', error));
-      dispatch(add_alert(response.data.message));
     })
     .catch(error => {
       dispatch(login_user_failure(error.response.data.message));
@@ -81,16 +83,17 @@ export const signupUser = (userData) => (dispatch) => {
   dispatch(signup_user());
   return API.post('/signup', userData)
     .then(response => {
-      dispatch(signup_user_success(response.data.user.id, response.data.user.username));
-
       SecureStore.setItemAsync('userInfo', JSON.stringify({
         userId: response.data.user.id,
         username: response.data.user.username,
         email: response.data.user.email,
         token: response.data.token,
       }))
+      .then(() => {
+        dispatch(signup_user_success(response.data.user.id, response.data.user.username));
+        dispatch(add_alert(response.data.message));
+      })
         .catch((error) => console.log('Could not save user info', error));
-      dispatch(add_alert(response.data.message));
     })
     .catch(error => {
       dispatch(signup_user_failure(error.response.data));

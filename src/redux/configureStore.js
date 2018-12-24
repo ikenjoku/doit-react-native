@@ -6,6 +6,7 @@ import todoReducer from './reducers/todoReducer';
 import authReducer from './reducers/authReducer';
 import alertReducer from './reducers/alertReducer';
 import storage from 'redux-persist/es/storage';
+import rootReducer from './reducers';
 
 const config = {
   key: 'root',
@@ -16,11 +17,7 @@ const config = {
 const configureStore = () => {
   const store = createStore(
     // persistCombineReducers(config, {
-    combineReducers({
-    todoReducer,
-    authReducer,
-    alertReducer,
-  }), applyMiddleware(thunk, logger));
+    rootReducer, applyMiddleware(thunk, logger));
 
   // const persistor = persistStore(store);
   // return { persistor, store };

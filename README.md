@@ -5,7 +5,9 @@ A simple CRUD application for managing todo items.
 
 # Description
 
-**doit** is the frontend application built in React Native to manage checklist/todo items. This application also has user authentication and basic validations.
+**doit** is the frontend application built in React Native to manage checklist/todo items. This application has built-in user authentication and basic validations.
+
+![screenit](https://user-images.githubusercontent.com/32720508/50410108-2aecf680-07f7-11e9-983a-9317bff03e93.png)
 
 # Table of Contents
 
@@ -43,14 +45,14 @@ Follow these steps to set up the project in development mode
 - Install [Nodejs](https://nodejs.org/en/download/)
 - Clone the repository by running the command
   ```
-  git clone https://github.com/ikenjoku/doit.git
+  git clone https://github.com/ikenjoku/doit-react-native.git
   ```
 - Run `cd doit` to enter the application's directory
 - Install the application's dependencies by running the command
   ```
   yarn install
   ```
-- Run the application `make start`
+- Run the application `expo start`
 
 
 ## Testing
@@ -60,7 +62,7 @@ TODO - as projest evolves
 To execute all tests, run the command
 
 ```
-  yarn test or make test
+  yarn test
 ```
 
 ## Contribute
@@ -69,9 +71,9 @@ Contributions to the project are welcome! Before contributing, look through the 
 
 - Clone the repository and checkout from `develop` to a new branch to start working on the assigned task. Ensure branch names follow the convention in the project.
 - Work on the task following the coding standards and [style guide](https://github.com/airbnb/javascript) used in the project.
-- When task has been completed, make commits and raise a pull request against `develop` branch, also ensure to follow the conventions.
+- When task has been completed, make commits and raise a pull request against `development` branch, also ensure to follow the conventions.
 
-If the pull request is accepted by the owners of the repository, then it is merged into the `develop` branch and closed.
+If the pull request is accepted by the owners of the repository, then it is merged into the `development` branch and closed.
 
 ## Deployment
 
@@ -79,4 +81,4 @@ TODO - add deployment commands
 
 ## License
 
-This application is licensed under the terms of the [MIT License](https://github.com/ikenjoku/doit/blob/develop/LICENSE)
+This application is licensed under the terms of the [MIT License](https://github.com/ikenjoku/doit-react-native/blob/develop/LICENSE)

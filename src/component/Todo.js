@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, StatusBar, Keyboard } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { add_todo_success } from '../redux/actions/todoActions';
+import { createTodo, fetchTodos } from '../redux/actions/todoActions';
+import { logoutUser } from '../redux/actions/authActions';
 import TodoList from './TodoList';
-import { todos } from '../mockData/todos';
 class Todo extends Component {
   state = {
     text: '',
   };
 
+  componentDidMount(){
+    this.props.fetchTodos(this.props.userId);
+  };
+
   addTodo = text => {
     if (text.length > 0) {
-      const newItem = { id: Math.floor(Math.random() * 10000), text }
-      this.props.add_todo_success(newItem);
+      this.props.createTodo(this.props.userId, text);
       Keyboard.dismiss();
     }
   }
@@ -27,7 +30,7 @@ class Todo extends Component {
       if (this.props.todos.length > 0) {
         return (
           <View style={styles.containList}>
-            <TodoList />
+            <TodoList/>
           </View>
         );
       } else {
@@ -42,9 +45,21 @@ class Todo extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle='light-content' />
-        <View style={styles.topbar}>
-          <Text style={styles.title}>Do-It List</Text>
+        <View style={styles.containTopbar}>
+          <View style={styles.topbar}>
+            <Text style={styles.title}>Do-It List</Text>
+          </View>
+          <View style={styles.logoutIcon}>
+            <Icon
+              name='sign-out'
+              type='font-awesome'
+              color='#fff'
+              size={20}
+              iconStyle={{paddingLeft: 20}}
+              onPress={() => this.props.logoutUser()} />
+          </View>
         </View>
+
         <View style={styles.containForm}>
           <View style={styles.inputContainer}>
             <TextInput
@@ -64,7 +79,6 @@ class Todo extends Component {
               borderRadius: 5,
               height: 50,
             }}
-            sty
           />
         </View>
         {renderList()}
@@ -73,8 +87,9 @@ class Todo extends Component {
   }
 };
 
-const mapStateToProps = ({ todoReducer }) => ({
-  todos: todoReducer.todos
+const mapStateToProps = ({ todoReducer, authReducer }) => ({
+  todos: todoReducer.todos,
+  userId: authReducer.userId,
 });
 
 const styles = StyleSheet.create({
@@ -92,6 +107,7 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingTop: 0,
     paddingRight: 0,
+    paddingLeft: 14,
     backgroundColor: '#151F38'
   },
   formInput: {
@@ -118,6 +134,7 @@ const styles = StyleSheet.create({
     color: '#151F38'
   },
   topbar: {
+    flex: 8,
     padding: 16,
     paddingTop: 30,
     paddingBottom: 8,
@@ -125,10 +142,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#151F38',
   },
+  logoutIcon: {
+    flex: 2,
+    paddingTop: 38,
+    backgroundColor: '#151F38',
+  },
   title: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 25,
+  },
+  containTopbar: {
+    flexDirection: 'row'
   }
 });
 
-export default connect(mapStateToProps, { add_todo_success })(Todo);
+export default connect(mapStateToProps, { createTodo, logoutUser, fetchTodos })(Todo);

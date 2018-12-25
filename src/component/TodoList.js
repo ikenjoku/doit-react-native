@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { FlatList, Button, Text, View, Modal, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { FlatList, Button, Text, View, Modal, StyleSheet, TextInput, ScrollView, RefreshControl } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import Swipeout from 'react-native-swipeout';
 import { connect } from 'react-redux';
-import { edit_todo_success, delete_todo_success } from '../redux/actions/todoActions';
+import { updateTodo, deleteTodo, fetchTodos } from '../redux/actions/todoActions';
 import { Loader } from "./Loader";
 
 class TodoList extends Component {
@@ -12,15 +12,21 @@ class TodoList extends Component {
     showModal: false,
     itemTextToEdit: '',
     itemIdToEdit: '',
+    refreshing: false,
   };
 
-  handleEditItem = ({ id, text }) => {
+  handleEditItem = ({ _id, text }) => {
     this.setState({
       itemTextToEdit: text,
-      itemIdToEdit: id,
+      itemIdToEdit: _id,
       showModal: true
      });
 
+  }
+
+  onRefresh = () => {
+    const { fetchTodos, userId} = this.props;
+    fetchTodos(userId);
   }
 
   toggleModal = () => {
@@ -36,9 +42,9 @@ class TodoList extends Component {
 
   editItem = () => {
     const { itemIdToEdit, itemTextToEdit } = this.state;
-    const updatedItem = {id: itemIdToEdit, text: itemTextToEdit}
-    this.props.edit_todo_success(updatedItem, itemIdToEdit)
-    this.clearState()
+    const updatedItem = {id: itemIdToEdit, text: itemTextToEdit};
+    this.props.updateTodo(this.props.userId, updatedItem);
+    this.clearState();
   }
 
   render() {
@@ -49,7 +55,7 @@ class TodoList extends Component {
           text: 'Delete',
           type: 'delete',
           onPress: () => {
-            this.props.delete_todo_success(item.id)
+            this.props.deleteTodo(this.props.userId, item._id)
           }
         },
         {
@@ -84,11 +90,18 @@ class TodoList extends Component {
       }
       else {
         return (
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh}
+              />
+            }
+          >
             <FlatList
               data={this.props.todos}
               renderItem={renderTodoItem}
-              keyExtractor={item => item.id.toString()}
+              keyExtractor={item => item._id.toString()}
             />
             <View>
             <Modal animationType={"slide"} transparent={false}
@@ -140,10 +153,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ todoReducer }) => ({
+const mapStateToProps = ({ todoReducer, authReducer }) => ({
+  userId: authReducer.userId,
   todos: todoReducer.todos,
   error: todoReducer.error,
   isFetching: todoReducer.isFetching,
 });
 
-export default connect(mapStateToProps, { edit_todo_success, delete_todo_success })(TodoList);
+export default connect(mapStateToProps, { updateTodo, deleteTodo, fetchTodos })(TodoList);

@@ -28,14 +28,14 @@ const todoReducer = (state = initialState, action) => {
     case ActionTypes.EDIT_TODO_ITEM:
       return { ...state, isUpdating: true };
     case ActionTypes.EDIT_TODO_SUCCESS:
-      return { ...state, isUpdating: false, todos: state.todos.map((item) => item.id === action.id ? action.updatedItem : item ), error: null };
+      return { ...state, isUpdating: false, todos: state.todos.map((item) => item._id === action.id ? action.updatedItem : item ), error: null };
     case ActionTypes.EDIT_TODO_FAILURE:
       return { ...state, isUpdating: false, error: action.error };
 
     case ActionTypes.DELETE_TODO_ITEM:
       return { ...state, isDeleting: true };
     case ActionTypes.DELETE_TODO_SUCCESS:
-      return { ...state, isDeleting: false, todos: state.todos.filter((item) => item.id !== action.id), error: null };
+      return { ...state, isDeleting: false, todos: state.todos.filter((item) => item._id !== action.id), error: null };
     case ActionTypes.DELETE_TODO_FAILURE:
       return { ...state, isDeleting: false, error: action.error };
     default:

@@ -24,8 +24,6 @@ const authReducer = (state = initialState, action) => {
     case ActionTypes.SIGNUP_USER_FAILURE:
       return { ...state, isLoading: false, error: action.error };
 
-    case ActionTypes.LOGOUT_USER:
-      return { ...state, userId: '', username: '' };
     case ActionTypes.REGISTER_PAGE:
       return { ...state, signup: true };
     case ActionTypes.LOGIN_PAGE:

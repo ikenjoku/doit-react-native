@@ -56,7 +56,7 @@ Follow these steps to set up the project in development mode
 
 
 ## Testing
-TODO - as projest evolves
+TODO - as project evolves
 
 [Jest](https://jestjs.io) will be used as the testing framework for both the unit tests and integration tests.
 To execute all tests, run the command
@@ -81,4 +81,4 @@ TODO - add deployment commands
 
 ## License
 
-This application is licensed under the terms of the [MIT License](https://github.com/ikenjoku/doit-react-native/blob/develop/LICENSE)
+This application is licensed under the terms of the [MIT License](https://github.com/ikenjoku/doit-react-native/blob/development/LICENSE)

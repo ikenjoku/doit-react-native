@@ -47,7 +47,7 @@ Follow these steps to set up the project in development mode
   ```
   git clone https://github.com/ikenjoku/doit-react-native.git
   ```
-- Run `cd doit` to enter the application's directory
+- Run `cd doit-react-native` to enter the application's directory
 - Install the application's dependencies by running the command
   ```
   yarn install
